@@ -1,0 +1,40 @@
+service: auction-service
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-bundle
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 256
+  stage: ${opt:stage, 'dev'}
+  region: eu-west-1
+  environment:
+    AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
+  iam:
+    role:
+      statements:
+        - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
+
+functions:
+  createAuction:
+    handler: src/lambdas/createAuction.handler
+    events:
+      - http:
+          path: /auctions
+          method: POST
+          cors: true
+
+resources:
+  Resources:
+    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
+
+custom:
+  AuctionsTable:
+    name: !Ref AuctionsTable
+    arn: !GetAtt AuctionsTable.Arn
+
+  bundle:
+    linting: true
