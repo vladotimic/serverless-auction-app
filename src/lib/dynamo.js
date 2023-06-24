@@ -3,6 +3,7 @@ import {
   DynamoDBDocumentClient,
   PutCommand,
   ScanCommand,
+  GetCommand,
 } from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient({ region: 'eu-west-1' });
@@ -39,4 +40,21 @@ const get = async () => {
   }
 };
 
-export { create, get };
+const getById = async (id) => {
+  const params = {
+    TableName,
+    Key: {
+      id,
+    },
+  };
+
+  const command = new GetCommand(params);
+  try {
+    const data = await dynamo.send(command);
+    return data.Item;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { create, get, getById };

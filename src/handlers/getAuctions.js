@@ -1,7 +1,7 @@
 import middy from '../lib/middy';
 import { get } from '../lib/dynamo';
 
-const getAuctions = async (event) => {
+const getAuctions = async () => {
   const auctions = await get();
 
   return {

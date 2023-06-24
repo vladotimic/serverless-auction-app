@@ -7,7 +7,7 @@ const createAuction = async (event) => {
   const { title } = event.body;
 
   if (!title) {
-    return new createError.BadRequest('There is no title!');
+    throw new createError.BadRequest('There is no title!');
   }
 
   const now = new Date();
