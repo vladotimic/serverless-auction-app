@@ -20,11 +20,19 @@ provider:
 
 functions:
   createAuction:
-    handler: src/lambdas/createAuction.handler
+    handler: src/handlers/createAuction.handler
     events:
       - http:
           path: /auctions
           method: POST
+          cors: true
+
+  getAuctions:
+    handler: src/handlers/getAuctions.handler
+    events:
+      - http:
+          path: /auctions
+          method: GET
           cors: true
 
 resources:

@@ -1,9 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import createError from 'http-errors';
-import middy from '../middlewares/middy';
-import { create } from '../services/dynamo';
+import middy from '../lib/middy';
+import { create } from '../lib/dynamo';
 
-async function createAuction(event) {
+const createAuction = async (event) => {
   const { title } = event.body;
 
   if (!title) {
@@ -28,6 +28,6 @@ async function createAuction(event) {
     statusCode: 201,
     body: JSON.stringify({ auction }),
   };
-}
+};
 
 export const handler = middy(createAuction);

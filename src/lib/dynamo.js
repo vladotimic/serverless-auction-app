@@ -1,5 +1,9 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  ScanCommand,
+} from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient({ region: 'eu-west-1' });
 const dynamo = DynamoDBDocumentClient.from(client);
@@ -21,4 +25,18 @@ const create = async (Item) => {
   }
 };
 
-export { create };
+const get = async () => {
+  const params = {
+    TableName,
+  };
+
+  const command = new ScanCommand(params);
+  try {
+    const data = await dynamo.send(command);
+    return data.Items;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { create, get };
