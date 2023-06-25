@@ -15,6 +15,13 @@ const placeBid = async (event) => {
     throw new createError.NotFound(`Auction with id: ${id} not found!`);
   }
 
+  const currentAmount = auction.highestBid.amount;
+  if (amount <= currentAmount) {
+    throw new createError.BadRequest(
+      `Your bid must be higher than ${currentAmount}`
+    );
+  }
+
   const placedBid = await updateBid(id, amount);
 
   return {
