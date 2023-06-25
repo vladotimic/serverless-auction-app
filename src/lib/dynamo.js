@@ -4,6 +4,7 @@ import {
   PutCommand,
   ScanCommand,
   GetCommand,
+  UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient({ region: 'eu-west-1' });
@@ -57,4 +58,26 @@ const getById = async (id) => {
   }
 };
 
-export { create, get, getById };
+const updateBid = async (id, amount) => {
+  const params = {
+    TableName,
+    Key: {
+      id,
+    },
+    UpdateExpression: 'set highestBid.amount = :amount',
+    ExpressionAttributeValues: {
+      ':amount': amount,
+    },
+    ReturnValues: 'ALL_NEW',
+  };
+
+  const command = new UpdateCommand(params);
+  try {
+    const data = await dynamo.send(command);
+    return data.Attributes;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { create, get, getById, updateBid };

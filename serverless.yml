@@ -43,6 +43,14 @@ functions:
           method: GET
           cors: true
 
+  placeBid:
+    handler: src/handlers/placeBid.handler
+    events:
+      - http:
+          path: /auctions/{id}/bid
+          method: PATCH
+          cors: true
+
 resources:
   Resources:
     AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}

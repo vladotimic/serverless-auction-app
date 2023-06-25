@@ -20,6 +20,9 @@ const createAuction = async (event) => {
     status: 'OPEN',
     createdAt: now.toISOString(),
     endingAt: endDate.toISOString(),
+    highestBid: {
+      amount: 0,
+    },
   };
 
   await create(auction);
